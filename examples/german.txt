@@ -1,0 +1,22 @@
+﻿
+// Sep, 9
+ja = да
+jawohl = да, конечно
+nein = нет
+
+was = что
+wer = кто
+wie = как
+wieviel = сколько
+
+ich = я
+du = ты
+er = он
+sie = она, они
+wir = мы
+Sie = Вы
+
+der Tag = день
+die Tage = дни
+Guten Tag = добрый день
+auf Wiedersehen = до свидания
