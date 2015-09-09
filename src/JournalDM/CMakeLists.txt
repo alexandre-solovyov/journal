@@ -4,11 +4,20 @@ include(../../cmake/qt.cmake)
 
 set( PROJECT_HEADERS 
   JournalDM.h
+  JournalDM_Category.h
+  JournalDM_Constants.h
+  JournalDM_ExerciseData.h
+  JournalDM_IParser.h
   JournalDM_Model.h
+  JournalDM_StdParser.h
+  JournalDM_Tools.h
 )
 
 set( PROJECT_SOURCES
+  JournalDM_Category.cpp
   JournalDM_Model.cpp
+  JournalDM_StdParser.cpp
+  JournalDM_Tools.cpp
 )
 
 add_definitions( -DJOURNAL_DM_EXPORTS -D_CRT_SECURE_NO_WARNINGS )

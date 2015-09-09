@@ -7,6 +7,20 @@
 #include <TestLib.h>
 #include <TestLib_Runner.h>
 #include <JournalDM_TestModel.h>
+#include <QDir>
+
+QString GetTestFile( const QString& theRelativePath )
+{
+  QString aTestDataPath = qgetenv( "TEST_DATA_DIR" );
+  QDir aTestDataFolder( aTestDataPath );
+  return aTestDataFolder.absoluteFilePath( theRelativePath );
+}
+
+const QString& operator << ( std::ostream& theStream, const QString& theLine )
+{
+  theStream << theLine.toStdString();
+  return theLine;
+}
 
 /**
   The main function of the tests application

@@ -4,6 +4,7 @@ include(../../cmake/cppunit.cmake)
 include(../../cmake/qt.cmake)
 
 set( PROJECT_HEADERS 
+  JournalDM_Tests.h
   JournalDM_TestModel.h
 )
 
