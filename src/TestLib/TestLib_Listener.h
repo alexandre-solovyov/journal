@@ -22,13 +22,13 @@ public:
   void Clear();
   INT64 GetCompleteTimeInMS() const;
 
-  virtual void startTest( CppUnit::Test* );
-  virtual void endTest( CppUnit::Test* );
+  virtual void startTest( CppUnit::Test* ) override;
+  virtual void endTest( CppUnit::Test* ) override;
 
-  virtual void startSuite( CppUnit::Test* );
-  virtual void endSuite( CppUnit::Test* );
+  virtual void startSuite( CppUnit::Test* ) override;
+  virtual void endSuite( CppUnit::Test* ) override;
 
-  virtual void addFailure( const CppUnit::TestFailure& );
+  virtual void addFailure( const CppUnit::TestFailure& ) override;
 
 private:
   INT64 myStart; ///< start time in milliseconds
