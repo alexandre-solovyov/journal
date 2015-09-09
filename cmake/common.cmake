@@ -1,0 +1,18 @@
+
+cmake_minimum_required ( VERSION 2.6 )
+cmake_policy ( SET CMP0011 NEW )
+
+set ( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib )
+set ( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib )
+set ( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin )
+
+set( CMAKE_INCLUDE_CURRENT_DIR ON )
+
+IF( CMAKE_BUILD_TYPE MATCHES Debug )
+  add_definitions( -D_DEBUG )
+ENDIF()
+
+IF( MSVC )
+  set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP" )
+  message(STATUS "Added parallel build arguments to CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+ENDIF()
