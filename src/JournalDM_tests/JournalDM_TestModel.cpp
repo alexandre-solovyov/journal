@@ -60,6 +60,16 @@ void JournalDM_TestModel::test_loading_file()
 
 void JournalDM_TestModel::test_loading_folder()
 {
-  ///< \todo
+  JournalDM_Model aModel;
+  QString aPath = GetTestFile( "" );
+
+  CPPUNIT_ASSERT_EQUAL( true, aModel.Load( aPath ) );
+  CPPUNIT_ASSERT_EQUAL( 2, aModel.GetNbCategories() );
+  CPPUNIT_ASSERT_EQUAL( QString( "test1" ), aModel.GetCategory( 0 )->GetName() );
+  CPPUNIT_ASSERT_EQUAL( 8, aModel.GetCategory( 0 )->GetNbLines() );
+  CPPUNIT_ASSERT_EQUAL( 10, aModel.GetCategory( 0 )->GetNbExercises() );
+  CPPUNIT_ASSERT_EQUAL( QString( "test2" ), aModel.GetCategory( 1 )->GetName() );
+  CPPUNIT_ASSERT_EQUAL( 0, aModel.GetCategory( 1 )->GetNbLines() );
+  CPPUNIT_ASSERT_EQUAL( 0, aModel.GetCategory( 1 )->GetNbExercises() );
 }
 

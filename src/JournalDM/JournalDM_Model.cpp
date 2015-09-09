@@ -30,11 +30,12 @@ bool JournalDM_Model::Load( const QString& thePath )
 bool JournalDM_Model::LoadFolder( const QString& thePath )
 {
   QDir aFolder( thePath );
-  QStringList	aFilesList = aFolder.entryList();
+  QStringList	aFilesList = aFolder.entryList( QDir::Files | QDir::Readable );
   bool isOK = true;
   foreach( QString aFile, aFilesList )
   {
-    bool isFileOK = LoadFile( aFile );
+    QString aPath = aFolder.absoluteFilePath( aFile );
+    bool isFileOK = LoadFile( aPath );
     isOK = isOK && isFileOK;
   }
   return isOK;
