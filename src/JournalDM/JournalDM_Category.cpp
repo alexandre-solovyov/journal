@@ -8,7 +8,7 @@
 #include <QTextStream>
 
 JournalDM_Category::JournalDM_Category( JournalDM_Model* theModel, const QString& theName )
-  : QObject( theModel ), myName( theName )
+  : QObject( theModel ), myName( theName ), myNbNonEmptyLines( 0 )
 {
   myExercises.reserve( LIST_RESERVE );
 }
@@ -39,9 +39,9 @@ bool JournalDM_Category::Load( const QString& thePath, const QList<JournalDM_IPa
   return true;
 }
 
-int JournalDM_Category::GetNbLines() const
+int JournalDM_Category::GetNbLines( bool isOnlyNonEmpty ) const
 {
-  return myLines.size();
+  return isOnlyNonEmpty ? myNbNonEmptyLines : myLines.size();
 }
 
 int JournalDM_Category::GetNbExercises() const
@@ -64,9 +64,19 @@ bool JournalDM_Category::GenerateExercises( const QString& theLine,
   if( aLine.isEmpty() )
     return false;
 
+  myNbNonEmptyLines++;
+  bool isBlockNext = false;
   foreach( JournalDM_IParser* aParser, theParsers )
-    foreach( JournalDM_ExerciseData aData, aParser->extractData( aLine ) )
-      myExercises.append( aData );
+  {
+    JournalDM_ExerciseList aDataList = aParser->extractData( aLine, isBlockNext );
+    if( !aDataList.empty() )
+    {
+      foreach( JournalDM_ExerciseData aData, aDataList )
+        myExercises.append( aData );
+      if( isBlockNext )
+        return true;
+    }
+  }
 
   return true;
 }

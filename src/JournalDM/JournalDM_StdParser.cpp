@@ -2,6 +2,7 @@
 #include <JournalDM_StdParser.h>
 #include <JournalDM_Constants.h>
 #include <JournalDM_Model.h>
+#include <JournalDM_Tools.h>
 
 JournalDM_StdParser::JournalDM_StdParser( JournalDM_Model* theModel )
   : QObject( theModel )
@@ -12,24 +13,18 @@ JournalDM_StdParser::~JournalDM_StdParser()
 {
 }
 
-bool IsWord( const QString& theWord )
+JournalDM_ExerciseList JournalDM_StdParser::extractData( const QString& theLine,
+                                                         bool& isBlockNext ) const
 {
-  for( int i=0, n=theWord.size(); i<n; i++ )
-    if( !theWord[i].isLetter() )
-      return false;
-  return true;
-}
-
-QList<JournalDM_ExerciseData> JournalDM_StdParser::extractData( const QString& theLine ) const
-{
-  QList<JournalDM_ExerciseData> aResult;
+  isBlockNext = false;
+  JournalDM_ExerciseList aResult;
   JournalDM_ExerciseData aData;
   aResult.reserve( LIST_RESERVE );
 
   int aNbMarkedParts = 0;
   for( int i=0, n=theLine.size(); i<n; i++ )
   {
-    if( theLine[i] != QUESTION_MARK )
+    if( theLine[i] != WORD_MARK )
       continue;
 
     int aStart = i+1;
@@ -41,6 +36,7 @@ QList<JournalDM_ExerciseData> JournalDM_StdParser::extractData( const QString& t
     aData.Answer = theLine.mid( aStart, aLen );
     aData.Question = theLine;
     aData.Question.replace( aStart-1, aLen+1, PLACEHOLDER );
+    aData.Question.remove( WORD_MARK );
 
     aResult.append( aData );
     aNbMarkedParts++;
@@ -51,7 +47,7 @@ QList<JournalDM_ExerciseData> JournalDM_StdParser::extractData( const QString& t
     // all words are considered as marked
     QStringList aWords = theLine.split( ' ', QString::SkipEmptyParts );
     for( int i=0, n=aWords.size(); i<n; i++ )
-      if( IsWord( aWords[i] ) )
+      if( JournalDM_Tools::IsWord( aWords[i] ) )
       {
         aData.Answer = aWords[i];
         aWords[i] = PLACEHOLDER;

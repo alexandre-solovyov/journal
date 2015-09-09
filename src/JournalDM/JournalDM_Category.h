@@ -2,7 +2,7 @@
 #pragma once
 
 #include <JournalDM.h>
-#include <JournalDM_ExerciseData.h>
+#include <JournalDM_Exercise.h>
 #include <QObject>
 #include <QStringList>
 
@@ -18,7 +18,7 @@ public:
   QString GetName() const;
   bool Load( const QString& thePath, const QList<JournalDM_IParser*>& theParsers );
 
-  int GetNbLines() const;
+  int GetNbLines( bool isOnlyNonEmpty = false ) const;
   int GetNbExercises() const;
   JournalDM_ExerciseData GetExercise( int theIndex ) const;
 
@@ -26,7 +26,8 @@ protected:
   bool GenerateExercises( const QString& theLine, const QList<JournalDM_IParser*>& theParsers );
 
 private:
-  QString                       myName;
-  QStringList                   myLines;
-  QList<JournalDM_ExerciseData> myExercises;
+  QString                myName;
+  QStringList            myLines;
+  int                    myNbNonEmptyLines;
+  JournalDM_ExerciseList myExercises;
 };

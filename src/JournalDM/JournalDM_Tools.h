@@ -8,4 +8,5 @@ class JOURNAL_DM_API JournalDM_Tools
 {
 public:
   static QString RemoveComments( const QString& );
+  static bool IsWord( const QString& theWord );
 };

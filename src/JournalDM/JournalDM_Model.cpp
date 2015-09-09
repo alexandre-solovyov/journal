@@ -2,6 +2,7 @@
 #include <JournalDM_Model.h>
 #include <JournalDM_Category.h>
 #include <JournalDM_StdParser.h>
+#include <JournalDM_TranslationParser.h>
 #include <QDir>
 #include <QFileInfo>
 
@@ -15,6 +16,7 @@ JournalDM_Model::~JournalDM_Model()
 
 void JournalDM_Model::InitParsers()
 {
+  myParsers.append( new JournalDM_TranslationParser( this ) );
   myParsers.append( new JournalDM_StdParser( this ) );
 }
 

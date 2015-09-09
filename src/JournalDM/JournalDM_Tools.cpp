@@ -20,3 +20,11 @@ QString JournalDM_Tools::RemoveComments( const QString& theLine )
   
   return aLine;
 }
+
+bool JournalDM_Tools::IsWord( const QString& theWord )
+{
+  for( int i=0, n=theWord.size(); i<n; i++ )
+    if( !theWord[i].isLetter() )
+      return false;
+  return true;
+}

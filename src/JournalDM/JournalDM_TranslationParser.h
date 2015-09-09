@@ -6,12 +6,12 @@
 
 class JournalDM_Model;
 
-class JOURNAL_DM_API JournalDM_StdParser : public JournalDM_IParser,
-                                           public QObject
+class JOURNAL_DM_API JournalDM_TranslationParser : public JournalDM_IParser,
+                                                   public QObject
 {
 public:
-  JournalDM_StdParser( JournalDM_Model* );
-  virtual ~JournalDM_StdParser();
+  JournalDM_TranslationParser( JournalDM_Model* );
+  virtual ~JournalDM_TranslationParser();
 
   JournalDM_ExerciseList extractData( const QString& theLine,
                                       bool& isBlockNext ) const override;
