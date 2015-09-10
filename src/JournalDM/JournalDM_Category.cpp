@@ -80,3 +80,9 @@ bool JournalDM_Category::GenerateExercises( const QString& theLine,
 
   return true;
 }
+
+JournalDM_ExerciseData JournalDM_Category::GetRandomExercise() const
+{
+  int anExerciseIndex = rand() % GetNbExercises();
+  return GetExercise( anExerciseIndex );
+}

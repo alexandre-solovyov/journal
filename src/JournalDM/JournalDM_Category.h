@@ -21,6 +21,7 @@ public:
   int GetNbLines( bool isOnlyNonEmpty = false ) const;
   int GetNbExercises() const;
   JournalDM_ExerciseData GetExercise( int theIndex ) const;
+  JournalDM_ExerciseData GetRandomExercise() const;
 
 protected:
   bool GenerateExercises( const QString& theLine, const QList<JournalDM_IParser*>& theParsers );
