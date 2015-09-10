@@ -14,6 +14,7 @@ JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
 {
   myShrink = 0.8;
   myDelta = -10;
+
   QGraphicsScene* aScene = new QGraphicsScene( this );
   setScene( aScene );
   

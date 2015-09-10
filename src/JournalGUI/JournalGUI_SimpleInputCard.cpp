@@ -1,5 +1,6 @@
 
 #include <JournalGUI_SimpleInputCard.h>
+#include <JournalGUI_LineEdit.h>
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -8,17 +9,18 @@
 JournalGUI_SimpleInputCard::JournalGUI_SimpleInputCard( QWidget* theParent )
   : JournalGUI_ExerciseCard( theParent )
 {
-  QFont aFont( "Arial", 14 );
-  aFont.setBold( true );
+  QFont aQuestionFont( "Arial", 16 );
+  aQuestionFont.setBold( false );
+  QFont anAnswerFont = aQuestionFont;
+  aQuestionFont.setBold( true );
 
   QGridLayout* aLayout = layout();
 
   myQuestion = new QLabel( "QUESTION", this );
-  myQuestion->setFont( aFont );
-  myAnswer = new QLineEdit( this );
-  myAnswer->setFont( aFont );
-  myReady = new QPushButton( tr( "VERIFY" ), this );
-  myReady->setFont( aFont );
+  myQuestion->setFont( aQuestionFont );
+  myAnswer = new JournalGUI_LineEdit( this );
+  myAnswer->setFont( anAnswerFont );
+  myReady = new QPushButton( tr( "Verify" ), this );
 
   aLayout->addWidget( myQuestion, 0, 0 );
   aLayout->addWidget( myAnswer, 1, 0 );

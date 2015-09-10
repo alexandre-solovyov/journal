@@ -4,12 +4,14 @@ include(../../cmake/qt.cmake)
 
 set( PROJECT_HEADERS 
   JournalGUI_ExerciseCard.h
+  JournalGUI_LineEdit.h
   JournalGUI_SimpleInputCard.h
 )
 
 set( PROJECT_SOURCES
   JournalGUI.cpp
   JournalGUI_ExerciseCard.cpp
+  JournalGUI_LineEdit.cpp
   JournalGUI_SimpleInputCard.cpp
 )
 
