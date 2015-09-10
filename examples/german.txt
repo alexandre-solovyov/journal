@@ -23,3 +23,26 @@ auf Wiedersehen = до свидания
 der Morgen = утро
 die Nacht = ночь
 der Abend = вечер
+
+
+// Sep, 10
+sein = быть
+essen = есть
+trinken = пить
+gehen = ходить
+haben = иметь
+arbeiten = работать
+fahren = ехать
+geben = давать
+helfen = помогать
+kaufen = покупать
+können = мочь
+lernen = учиться
+lesen = читать
+lieben = любит
+machen = делать
+reden = разговаривать
+schlafen = спать
+suchen = искать
+waschen = мыть
+warten = ждать
