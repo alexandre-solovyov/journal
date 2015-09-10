@@ -9,6 +9,7 @@ set( PROJECT_HEADERS
   JournalDM_Exercise.h
   JournalDM_IParser.h
   JournalDM_Model.h
+  JournalDM_Statistics.h
   JournalDM_StdParser.h
   JournalDM_Tools.h
   JournalDM_TranslationParser.h
@@ -18,6 +19,7 @@ set( PROJECT_SOURCES
   JournalDM_Category.cpp
   JournalDM_Exercise.cpp
   JournalDM_Model.cpp
+  JournalDM_Statistics.cpp
   JournalDM_StdParser.cpp
   JournalDM_Tools.cpp
   JournalDM_TranslationParser.cpp
