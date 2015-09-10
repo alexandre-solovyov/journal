@@ -20,3 +20,6 @@ der Tag = день
 die Tage = дни
 Guten Tag = добрый день
 auf Wiedersehen = до свидания
+der Morgen = утро
+die Nacht = ночь
+der Abend = вечер
