@@ -20,6 +20,7 @@ public:
   CPPUNIT_TEST( test_remove_comments );
   CPPUNIT_TEST( test_loading_file );
   CPPUNIT_TEST( test_loading_folder );
+  CPPUNIT_TEST( test_translation_parser );
   CPPUNIT_TEST_SUITE_END();
   ///@endcond
 
@@ -27,4 +28,5 @@ public:
   void test_remove_comments();
   void test_loading_file();
   void test_loading_folder();
+  void test_translation_parser();
 };

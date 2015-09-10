@@ -1,5 +1,11 @@
 
 #include <JournalDM_Exercise.h>
+#include <QHash>
+
+uint JournalDM_ExerciseData::GetHash() const
+{
+  return qHash( Question + Answer );
+}
 
 void JournalDM_ExerciseList::append( const QString& theQuestion, const QString& theAnswer )
 {

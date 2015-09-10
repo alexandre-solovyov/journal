@@ -8,6 +8,8 @@ struct JournalDM_ExerciseData
 {
   QString Question;
   QString Answer;
+
+  uint GetHash() const;
 };
 
 class JournalDM_ExerciseList : public QList<JournalDM_ExerciseData>

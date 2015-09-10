@@ -50,3 +50,6 @@ echo CPPCHECK directory: %CPPCHECKDIR%
 rem --------------- Examples path --------------
 if ["%TEST_DATA_DIR%"] == [""] set "TEST_DATA_DIR=%PROJECT_DIR%\testdata"
 echo Test data directory: %TEST_DATA_DIR%
+
+if ["%EXAMPLES_DIR%"] == [""] set "EXAMPLES_DIR=%PROJECT_DIR%\examples"
+echo Examples directory: %EXAMPLES_DIR%

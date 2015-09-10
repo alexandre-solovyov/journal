@@ -9,6 +9,7 @@
 #include <JournalDM_Category.h>
 #include <JournalDM_Model.h>
 #include <JournalDM_Tools.h>
+#include <JournalDM_TranslationParser.h>
 
 void JournalDM_TestModel::test_remove_comments()
 {
@@ -76,3 +77,17 @@ void JournalDM_TestModel::test_loading_folder()
   CPPUNIT_ASSERT_EQUAL( 0, aModel.GetCategory( 1 )->GetNbExercises() );
 }
 
+void JournalDM_TestModel::test_translation_parser()
+{
+  JournalDM_TranslationParser aParser( 0 );
+  JournalDM_ExerciseList aResult;
+  bool isBlock;
+  
+  aResult = aParser.extractData( "a = b", isBlock );
+  CPPUNIT_ASSERT_EQUAL( 2, aResult.size() );
+  CPPUNIT_ASSERT_EQUAL( QString( "... = b" ), aResult[0].Question );
+  CPPUNIT_ASSERT_EQUAL( QString( "a" ), aResult[0].Answer );
+
+  aResult = aParser.extractData( "a != b", isBlock );
+  CPPUNIT_ASSERT_EQUAL( 0, aResult.size() );
+}
