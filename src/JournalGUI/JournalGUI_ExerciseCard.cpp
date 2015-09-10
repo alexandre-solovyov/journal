@@ -1,34 +1,57 @@
 
-#include <JournalGUI_Window.h>
+#include <JournalGUI_ExerciseCard.h>
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QResizeEvent>
 #include <QGraphicsBlurEffect>
+#include <QGraphicsProxyWidget>
+#include <QGridLayout>
+#include <QFrame>
 
-JournalGUI_Window::JournalGUI_Window( QWidget* theParent )
-  : QWidget( theParent )
+JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
+  : QGraphicsView( theParent )
 {
-  myRotationDeg = -3;
   myShrink = 0.8;
-  myDelta = 30;
-
+  myDelta = -10;
+  QGraphicsScene* aScene = new QGraphicsScene( this );
+  setScene( aScene );
+  
   setWindowFlags( Qt::Window | Qt::FramelessWindowHint );
   setAttribute( Qt::WA_TranslucentBackground );
+  setStyleSheet( "background: transparent" );
+  setFrameShape( QFrame::NoFrame );
+
+  myPixmapItem = new QGraphicsPixmapItem();
+  aScene->addItem( myPixmapItem );
+
+  QFrame* aFrame = new QFrame( 0 );
+  myFrameItem = aScene->addWidget( aFrame );
+  new QGridLayout( aFrame );
 }
 
-JournalGUI_Window::~JournalGUI_Window()
+JournalGUI_ExerciseCard::~JournalGUI_ExerciseCard()
 {
 }
 
-QImage applyEffectToImage( QPixmap theSource, QGraphicsEffect* theEffect )
+void JournalGUI_ExerciseCard::SetExercise( const JournalDM_ExerciseData& theExercise )
+{
+  myExercise = theExercise;
+}
+
+JournalDM_ExerciseData JournalGUI_ExerciseCard::GetExercise() const
+{
+  return myExercise;
+}
+
+QPixmap applyEffectToImage( const QPixmap& theSource, QGraphicsEffect* theEffect )
 {
   QGraphicsScene aScene;
   QGraphicsPixmapItem anItem;
   anItem.setPixmap( theSource );
   anItem.setGraphicsEffect( theEffect );
   aScene.addItem( &anItem );
-  QImage aResult( theSource.size(), QImage::Format_ARGB32 );
+  QPixmap aResult( theSource.width(), theSource.height() );
   aResult.fill( Qt::transparent );
   QPainter aPainter( &aResult );
   aScene.render( &aPainter, QRectF(), QRectF( 0, 0, theSource.width(), theSource.height() ) );
@@ -51,7 +74,7 @@ QRectF moveR( const QRectF& theRect, int theDx, int theDy )
   return QRectF( tl, theRect.size() );
 }
 
-void JournalGUI_Window::resizeEvent( QResizeEvent* theEvent )
+void JournalGUI_ExerciseCard::resizeEvent( QResizeEvent* theEvent )
 {
   QWidget::resizeEvent( theEvent );
 
@@ -69,36 +92,16 @@ void JournalGUI_Window::resizeEvent( QResizeEvent* theEvent )
 
   QGraphicsBlurEffect* aBlur = new QGraphicsBlurEffect();
   aBlur->setBlurRadius( 20 );
-  myShadow = QPixmap::fromImage( applyEffectToImage( aShadow, aBlur ) );
+  myShadow = applyEffectToImage( aShadow, aBlur );
+
+  myPixmapItem->setPixmap( myShadow );
+  myPixmapItem->setPos( 0, 0 );
+  
+  QRectF aCardRect = moveR( rs, myDelta, myDelta );
+  myFrameItem->setGeometry( aCardRect );
 }
 
-void JournalGUI_Window::paintEvent( QPaintEvent* theEvent )
+QGridLayout* JournalGUI_ExerciseCard::layout() const
 {
-  QWidget::paintEvent( theEvent );
-
-  QPainter aPainter( this );
-  aPainter.setRenderHint( QPainter::Antialiasing );
-  aPainter.setRenderHint( QPainter::TextAntialiasing );
-  aPainter.setRenderHint( QPainter::SmoothPixmapTransform	);
-  aPainter.setRenderHint( QPainter::HighQualityAntialiasing );
-
-  QRect r = rect();
-  QRectF rs = shrink( r, myShrink );
-
-  int w = r.width();
-  int h = r.height();
-  int d = -10;
-
-  //aPainter.fillRect( r, Qt::blue );
-
-  aPainter.save();
-
-  aPainter.translate( w/2, h/2 );
-  aPainter.rotate( myRotationDeg );
-  aPainter.translate( -w/2, -h/2 );
-
-  aPainter.drawPixmap( r, myShadow, r );
-  aPainter.fillRect( moveR( rs, d, d ), Qt::white );
-
-  aPainter.restore();
+  return dynamic_cast<QGridLayout*>( myFrameItem->widget()->layout() );
 }
