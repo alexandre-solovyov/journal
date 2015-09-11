@@ -5,7 +5,8 @@
 #include <JournalDM_Exercise.h>
 
 class QGridLayout;
-class QFrame;
+class QLabel;
+class QPushButton;
 
 class JournalGUI_ExerciseCard : public QGraphicsView
 {
@@ -15,15 +16,23 @@ public:
   JournalGUI_ExerciseCard( QWidget* theParent = 0 );
   virtual ~JournalGUI_ExerciseCard();
 
-  virtual void SetExercise( const JournalDM_ExerciseData& );
-  JournalDM_ExerciseData GetExercise() const;
+  virtual void SetExercises( const JournalDM_ExerciseList& );
+  JournalDM_ExerciseList GetExercises() const;
 
+  virtual int GetNbData() const = 0;
+  
 protected:
   void resizeEvent( QResizeEvent* theEvent ) override;
+  void keyPressEvent( QKeyEvent* theEvent ) override;
 
-  QGridLayout* layout() const;
+  QGridLayout* GetLayout() const;
 
-  virtual QString GetAnswer() const = 0;
+  virtual double Verify( QString&, QColor& ) = 0;
+  virtual void SetReadOnly( bool );
+
+signals:
+  void finish( double );
+  void next();
 
 protected slots:
   void OnFinish();
@@ -33,8 +42,13 @@ private:
   double                 myDelta;
   QColor                 myShadowColor;
   int                    myBlurRadius;
-  JournalDM_ExerciseData myExercise;
+  JournalDM_ExerciseList myExercises;
 
   QGraphicsRectItem*     myShadowItem;
   QGraphicsProxyWidget*  myFrameItem;
+  QLabel*                myStateLabel;
+
+  QPushButton*           myVerify;
+  QPushButton*           myNext;
+  bool                   myIsFinished;
 };

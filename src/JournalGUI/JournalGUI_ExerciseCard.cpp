@@ -1,15 +1,14 @@
 
 #include <JournalGUI_ExerciseCard.h>
-#include <QApplication>
-#include <QPainter>
-#include <QGraphicsScene>
-#include <QResizeEvent>
+#include <QFrame>
 #include <QGraphicsBlurEffect>
 #include <QGraphicsProxyWidget>
+#include <QGraphicsScene>
 #include <QGridLayout>
-#include <QFrame>
-#include <QMessageBox>
+#include <QLabel>
+#include <QPainter>
 #include <QPushButton>
+#include <QResizeEvent>
 
 const int MAX_NB_ROWS = 100;
 
@@ -20,6 +19,7 @@ JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
   myDelta = -10;
   myShadowColor = QColor( 64, 64, 64, 200 );
   myBlurRadius = 20;
+  myIsFinished = false;
 
   QGraphicsScene* aScene = new QGraphicsScene( this );
   setScene( aScene );
@@ -35,32 +35,44 @@ JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
   myShadowItem->setGraphicsEffect( aBlur );
   aScene->addItem( myShadowItem );
 
-  QFrame* aFrame = new QFrame( 0 );
-  QGridLayout* aLayout = new QGridLayout( aFrame );
-  aFrame->setLayout( aLayout );
+  QFrame* aMainFrame = new QFrame( 0 );
+  QVBoxLayout* aLayout = new QVBoxLayout( aMainFrame );
 
-  QPushButton* aVerify = new QPushButton( tr( "Verify" ), this );
-  connect( aVerify, SIGNAL( clicked() ), this, SLOT( OnFinish() ) );
+  QGridLayout* aMainLayout = new QGridLayout( 0 );
+  QHBoxLayout* aStatusLayout = new QHBoxLayout( 0 );
+  aLayout->addLayout( aMainLayout, 1 );
+  aLayout->addLayout( aStatusLayout, 0 );
 
-  aLayout->addWidget( aVerify, MAX_NB_ROWS+1, 1 );
-  aLayout->setColumnStretch( 0, 1 );
-  aLayout->setRowStretch( MAX_NB_ROWS, 1 );
+  myStateLabel = new QLabel( "", this );
+  aStatusLayout->addWidget( myStateLabel, 1 );
 
-  myFrameItem = aScene->addWidget( aFrame );
+  myVerify = new QPushButton( tr( "Verify" ), this );
+  connect( myVerify, SIGNAL( clicked() ), this, SLOT( OnFinish() ) );
+  aStatusLayout->addWidget( myVerify, 0 );
+
+  myNext = new QPushButton( tr( "Next" ), this );
+  connect( myNext, SIGNAL( clicked() ), this, SIGNAL( next() ) );
+  aStatusLayout->addWidget( myNext, 0 );
+  
+  aMainLayout->setColumnStretch( 0, 1 );
+  aMainLayout->setRowStretch( MAX_NB_ROWS, 1 );
+
+  myFrameItem = aScene->addWidget( aMainFrame );
 }
 
 JournalGUI_ExerciseCard::~JournalGUI_ExerciseCard()
 {
 }
 
-void JournalGUI_ExerciseCard::SetExercise( const JournalDM_ExerciseData& theExercise )
+void JournalGUI_ExerciseCard::SetExercises( const JournalDM_ExerciseList& theList )
 {
-  myExercise = theExercise;
+  myExercises = theList;
+  SetReadOnly( false );
 }
 
-JournalDM_ExerciseData JournalGUI_ExerciseCard::GetExercise() const
+JournalDM_ExerciseList JournalGUI_ExerciseCard::GetExercises() const
 {
-  return myExercise;
+  return myExercises;
 }
 
 QRectF shrink( const QRect& theRect, double theShrink )
@@ -91,12 +103,52 @@ void JournalGUI_ExerciseCard::resizeEvent( QResizeEvent* theEvent )
   myFrameItem->setGeometry( aCardRect );
 }
 
-QGridLayout* JournalGUI_ExerciseCard::layout() const
+QGridLayout* JournalGUI_ExerciseCard::GetLayout() const
 {
-  return dynamic_cast<QGridLayout*>( myFrameItem->widget()->layout() );
+  return dynamic_cast<QGridLayout*>( myFrameItem->widget()->layout()->itemAt( 0 )->layout() );
+}
+
+QString hex( int theNum, int theMinLen = 2 )
+{
+  QString aHex = QString::number( theNum, 16 );
+  while( aHex.length() < theMinLen )
+    aHex = "0" + aHex;
+  return aHex;
 }
 
 void JournalGUI_ExerciseCard::OnFinish()
 {
-  QMessageBox::information( qApp->topLevelWidgets().first(), "Info", "Finish" );
+  if( myIsFinished )
+    return;
+
+  QString aStatus;
+  QColor aStatusColor;
+  SetReadOnly( true );
+  double aResult = Verify( aStatus, aStatusColor );
+  emit finish( aResult );
+
+  myStateLabel->setText( aStatus );
+  QString aColorRepr = hex( aStatusColor.red() ) + 
+                       hex( aStatusColor.green() ) + 
+                       hex( aStatusColor.blue() );
+  QString aStyleSheet = "color: #" + aColorRepr;
+  myStateLabel->setStyleSheet( aStyleSheet );
+}
+
+void JournalGUI_ExerciseCard::SetReadOnly( bool isReadOnly )
+{
+  myVerify->setVisible( !isReadOnly );
+  myNext->setVisible( isReadOnly );
+  if( !isReadOnly )
+    myStateLabel->setText( "" );
+  myIsFinished = isReadOnly;
+}
+
+void JournalGUI_ExerciseCard::keyPressEvent( QKeyEvent* theEvent )
+{
+  if( myIsFinished && 
+      ( theEvent->key()==Qt::Key_Return || theEvent->key()==Qt::Key_Enter ) )
+    emit next();
+
+  QGraphicsView::keyPressEvent( theEvent );
 }

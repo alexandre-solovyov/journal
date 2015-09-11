@@ -2,15 +2,12 @@
 #include <JournalGUI_SimpleInputCard.h>
 #include <JournalGUI_LineEdit.h>
 #include <JournalGUI_QuestionLabel.h>
-#include <QApplication>
 #include <QGridLayout>
-#include <QLineEdit>
-#include <QPushButton>
 
 JournalGUI_SimpleInputCard::JournalGUI_SimpleInputCard( QWidget* theParent )
   : JournalGUI_ExerciseCard( theParent )
 {
-  QGridLayout* aLayout = layout();
+  QGridLayout* aLayout = GetLayout();
 
   myQuestion = new JournalGUI_QuestionLabel( this );
   myQuestion->setAlignment( Qt::AlignCenter );
@@ -26,16 +23,38 @@ JournalGUI_SimpleInputCard::~JournalGUI_SimpleInputCard()
 {
 }
 
-void JournalGUI_SimpleInputCard::SetExercise( const JournalDM_ExerciseData& theData )
+int JournalGUI_SimpleInputCard::GetNbData() const
 {
-  JournalGUI_ExerciseCard::SetExercise( theData );
-  myQuestion->setText( theData.Question );
-  myAnswer->setText( "" );
-  myAnswer->setFocus();
-  myCorrectAnswer = theData.Answer;
+  return 1;
 }
 
-QString JournalGUI_SimpleInputCard::GetAnswer() const
+void JournalGUI_SimpleInputCard::SetExercises( const JournalDM_ExerciseList& theList )
 {
-  return myAnswer->text();
+  JournalGUI_ExerciseCard::SetExercises( theList );
+  myQuestion->setText( theList[0].Question );
+  myAnswer->setText( "" );
+  myAnswer->setFocus();
+  myCorrectAnswer = theList[0].Answer;
+}
+
+QSize JournalGUI_SimpleInputCard::sizeHint() const
+{
+  return QSize( 480, 320 );
+}
+
+double JournalGUI_SimpleInputCard::Verify( QString& theStatus, QColor& theColor )
+{
+  QString anExpectedAnswer = GetExercises().first().Answer;
+  QString anActualAnswer = myAnswer->text().trimmed();
+
+  bool isOK = anExpectedAnswer==anActualAnswer;
+  theStatus = isOK ? tr( "Correct" ) : tr( "Incorrect" );
+  theColor = isOK ? Qt::green : Qt::red;
+  return isOK ? 1.0 : 0.0;
+}
+
+void JournalGUI_SimpleInputCard::SetReadOnly( bool isReadOnly )
+{
+  myAnswer->setReadOnly( isReadOnly );
+  JournalGUI_ExerciseCard::SetReadOnly( isReadOnly );
 }

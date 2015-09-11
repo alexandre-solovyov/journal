@@ -14,10 +14,13 @@ public:
   JournalGUI_SimpleInputCard( QWidget* theParent = 0 );
   virtual ~JournalGUI_SimpleInputCard();
 
-  void SetExercise( const JournalDM_ExerciseData& ) override;
+  void SetExercises( const JournalDM_ExerciseList& ) override;
+  int GetNbData() const override;
+  QSize sizeHint() const override;
 
 protected:
-  QString GetAnswer() const override;
+  double Verify( QString&, QColor& ) override;
+  void SetReadOnly( bool ) override;
 
 private:
   QLabel*       myQuestion;
