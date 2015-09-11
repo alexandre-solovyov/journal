@@ -5,7 +5,6 @@
 
 class QLabel;
 class QLineEdit;
-class QPushButton;
 
 class JournalGUI_SimpleInputCard : public JournalGUI_ExerciseCard
 {
@@ -23,6 +22,5 @@ protected:
 private:
   QLabel*       myQuestion;
   QLineEdit*    myAnswer;
-  QPushButton*  myReady;
   QString       myCorrectAnswer;
 };

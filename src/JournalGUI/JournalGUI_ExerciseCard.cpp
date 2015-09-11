@@ -9,6 +9,9 @@
 #include <QGridLayout>
 #include <QFrame>
 #include <QMessageBox>
+#include <QPushButton>
+
+const int MAX_NB_ROWS = 100;
 
 JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
   : QGraphicsView( theParent )
@@ -33,7 +36,16 @@ JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
   aScene->addItem( myShadowItem );
 
   QFrame* aFrame = new QFrame( 0 );
-  aFrame->setLayout( new QGridLayout( aFrame ) );
+  QGridLayout* aLayout = new QGridLayout( aFrame );
+  aFrame->setLayout( aLayout );
+
+  QPushButton* aVerify = new QPushButton( tr( "Verify" ), this );
+  connect( aVerify, SIGNAL( clicked() ), this, SLOT( OnFinish() ) );
+
+  aLayout->addWidget( aVerify, MAX_NB_ROWS+1, 1 );
+  aLayout->setColumnStretch( 0, 1 );
+  aLayout->setRowStretch( MAX_NB_ROWS, 1 );
+
   myFrameItem = aScene->addWidget( aFrame );
 }
 

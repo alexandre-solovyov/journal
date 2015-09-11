@@ -15,15 +15,10 @@ JournalGUI_SimpleInputCard::JournalGUI_SimpleInputCard( QWidget* theParent )
   myQuestion = new JournalGUI_QuestionLabel( this );
   myQuestion->setAlignment( Qt::AlignCenter );
   myAnswer = new JournalGUI_LineEdit( this );
-  myReady = new QPushButton( tr( "Verify" ), this );
 
   aLayout->addWidget( myQuestion, 0, 0, 1, 2 );
   aLayout->addWidget( myAnswer, 1, 0, 1, 2 );
-  aLayout->addWidget( myReady, 3, 1 );
-  aLayout->setRowStretch( 2, 1 );
-  aLayout->setColumnStretch( 0, 1 );
 
-  connect( myReady, SIGNAL( clicked() ), this, SLOT( OnFinish() ) );
   connect( myAnswer, SIGNAL( returnPressed() ), this, SLOT( OnFinish() ) );
 }
 
