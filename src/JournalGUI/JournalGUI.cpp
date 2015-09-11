@@ -37,8 +37,10 @@ int main( int argc, char** argv )
 
   JournalGUI_SimpleInputCard aWindow;
   aWindow.resize( w, h );
-  aWindow.SetExercise( aData );
   aWindow.show();
+  anApp.processEvents();
 
+  aWindow.SetExercise( aData );
+  
   return anApp.exec();
 }
