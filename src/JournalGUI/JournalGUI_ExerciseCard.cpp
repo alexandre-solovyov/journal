@@ -21,7 +21,6 @@ JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
   
   setWindowFlags( Qt::Window | Qt::FramelessWindowHint );
   setAttribute( Qt::WA_TranslucentBackground );
-  setStyleSheet( "background: transparent" );
   setFrameShape( QFrame::NoFrame );
 
   myShadowItem = new QGraphicsRectItem();
@@ -32,8 +31,8 @@ JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
   aScene->addItem( myShadowItem );
 
   QFrame* aFrame = new QFrame( 0 );
+  aFrame->setLayout( new QGridLayout( aFrame ) );
   myFrameItem = aScene->addWidget( aFrame );
-  new QGridLayout( aFrame );
 }
 
 JournalGUI_ExerciseCard::~JournalGUI_ExerciseCard()

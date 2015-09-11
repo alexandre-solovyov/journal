@@ -9,6 +9,8 @@ class QFrame;
 
 class JournalGUI_ExerciseCard : public QGraphicsView
 {
+  Q_OBJECT
+
 public:
   JournalGUI_ExerciseCard( QWidget* theParent = 0 );
   ~JournalGUI_ExerciseCard();

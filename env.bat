@@ -53,3 +53,6 @@ echo Test data directory: %TEST_DATA_DIR%
 
 if ["%EXAMPLES_DIR%"] == [""] set "EXAMPLES_DIR=%PROJECT_DIR%\examples"
 echo Examples directory: %EXAMPLES_DIR%
+
+if ["%STYLES_DIR%"] == [""] set "STYLES_DIR=%PROJECT_DIR%\styles"
+echo Styles directory: %STYLES_DIR%

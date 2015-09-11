@@ -9,6 +9,8 @@ class QPushButton;
 
 class JournalGUI_SimpleInputCard : public JournalGUI_ExerciseCard
 {
+  Q_OBJECT
+
 public:
   JournalGUI_SimpleInputCard( QWidget* theParent = 0 );
   ~JournalGUI_SimpleInputCard();

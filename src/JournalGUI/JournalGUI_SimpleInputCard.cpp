@@ -1,6 +1,7 @@
 
 #include <JournalGUI_SimpleInputCard.h>
 #include <JournalGUI_LineEdit.h>
+#include <QApplication>
 #include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
@@ -9,17 +10,10 @@
 JournalGUI_SimpleInputCard::JournalGUI_SimpleInputCard( QWidget* theParent )
   : JournalGUI_ExerciseCard( theParent )
 {
-  QFont aQuestionFont( "Georgia", 16 );
-  aQuestionFont.setBold( false );
-  QFont anAnswerFont = aQuestionFont;
-  aQuestionFont.setBold( true );
-
   QGridLayout* aLayout = layout();
 
   myQuestion = new QLabel( "QUESTION", this );
-  myQuestion->setFont( aQuestionFont );
   myAnswer = new JournalGUI_LineEdit( this );
-  myAnswer->setFont( anAnswerFont );
   myReady = new QPushButton( tr( "Verify" ), this );
 
   aLayout->addWidget( myQuestion, 0, 0, 1, 2 );
@@ -35,7 +29,9 @@ JournalGUI_SimpleInputCard::~JournalGUI_SimpleInputCard()
 
 void JournalGUI_SimpleInputCard::SetExercise( const JournalDM_ExerciseData& theData )
 {
+  JournalGUI_ExerciseCard::SetExercise( theData );
   myQuestion->setText( theData.Question );
   myAnswer->setText( "" );
+  myAnswer->setFocus();
   myCorrectAnswer = theData.Answer;
 }
