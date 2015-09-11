@@ -13,9 +13,12 @@ class JournalGUI_SimpleInputCard : public JournalGUI_ExerciseCard
 
 public:
   JournalGUI_SimpleInputCard( QWidget* theParent = 0 );
-  ~JournalGUI_SimpleInputCard();
+  virtual ~JournalGUI_SimpleInputCard();
 
   void SetExercise( const JournalDM_ExerciseData& ) override;
+
+protected:
+  QString GetAnswer() const override;
 
 private:
   QLabel*       myQuestion;

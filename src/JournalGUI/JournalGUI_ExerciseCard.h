@@ -13,7 +13,7 @@ class JournalGUI_ExerciseCard : public QGraphicsView
 
 public:
   JournalGUI_ExerciseCard( QWidget* theParent = 0 );
-  ~JournalGUI_ExerciseCard();
+  virtual ~JournalGUI_ExerciseCard();
 
   virtual void SetExercise( const JournalDM_ExerciseData& );
   JournalDM_ExerciseData GetExercise() const;
@@ -22,6 +22,11 @@ protected:
   void resizeEvent( QResizeEvent* theEvent ) override;
 
   QGridLayout* layout() const;
+
+  virtual QString GetAnswer() const = 0;
+
+protected slots:
+  void OnFinish();
 
 private:
   double                 myShrink;

@@ -4,12 +4,14 @@ include(../../cmake/common.cmake)
 set( PROJECT_HEADERS 
   JournalGUI_ExerciseCard.h
   JournalGUI_LineEdit.h
+  JournalGUI_QuestionLabel.h
   JournalGUI_SimpleInputCard.h
 )
 
 set( PROJECT_MOC_HEADERS
   JournalGUI_ExerciseCard.h
   JournalGUI_LineEdit.h
+  JournalGUI_QuestionLabel.h
   JournalGUI_SimpleInputCard.h
 )
 
@@ -17,6 +19,7 @@ set( PROJECT_SOURCES
   JournalGUI.cpp
   JournalGUI_ExerciseCard.cpp
   JournalGUI_LineEdit.cpp
+  JournalGUI_QuestionLabel.cpp
   JournalGUI_SimpleInputCard.cpp
 )
 

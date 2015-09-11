@@ -1,5 +1,6 @@
 
 #include <JournalGUI_ExerciseCard.h>
+#include <QApplication>
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QResizeEvent>
@@ -7,6 +8,7 @@
 #include <QGraphicsProxyWidget>
 #include <QGridLayout>
 #include <QFrame>
+#include <QMessageBox>
 
 JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
   : QGraphicsView( theParent )
@@ -80,4 +82,9 @@ void JournalGUI_ExerciseCard::resizeEvent( QResizeEvent* theEvent )
 QGridLayout* JournalGUI_ExerciseCard::layout() const
 {
   return dynamic_cast<QGridLayout*>( myFrameItem->widget()->layout() );
+}
+
+void JournalGUI_ExerciseCard::OnFinish()
+{
+  QMessageBox::information( qApp->topLevelWidgets().first(), "Info", "Finish" );
 }
