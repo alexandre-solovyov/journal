@@ -28,3 +28,19 @@ bool JournalDM_Tools::IsWord( const QString& theWord )
       return false;
   return true;
 }
+
+QString JournalDM_Tools::Hex( int theNumber, int theMinLength )
+{
+  QString aHex = QString::number( theNumber, 16 );
+  while( aHex.length() < theMinLength )
+    aHex = "0" + aHex;
+  return aHex;
+}
+
+QString JournalDM_Tools::ColorToHex( const QColor& theColor )
+{
+  QString aColorRepr = Hex( theColor.red() ) + 
+                       Hex( theColor.green() ) + 
+                       Hex( theColor.blue() );
+  return aColorRepr;
+}

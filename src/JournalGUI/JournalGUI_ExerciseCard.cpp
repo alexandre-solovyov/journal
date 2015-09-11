@@ -1,5 +1,6 @@
 
 #include <JournalGUI_ExerciseCard.h>
+#include <JournalDM_Tools.h>
 #include <QFrame>
 #include <QGraphicsBlurEffect>
 #include <QGraphicsProxyWidget>
@@ -108,14 +109,6 @@ QGridLayout* JournalGUI_ExerciseCard::GetLayout() const
   return dynamic_cast<QGridLayout*>( myFrameItem->widget()->layout()->itemAt( 0 )->layout() );
 }
 
-QString hex( int theNum, int theMinLen = 2 )
-{
-  QString aHex = QString::number( theNum, 16 );
-  while( aHex.length() < theMinLen )
-    aHex = "0" + aHex;
-  return aHex;
-}
-
 void JournalGUI_ExerciseCard::OnFinish()
 {
   if( myIsFinished )
@@ -128,10 +121,7 @@ void JournalGUI_ExerciseCard::OnFinish()
   emit finish( aResult );
 
   myStateLabel->setText( aStatus );
-  QString aColorRepr = hex( aStatusColor.red() ) + 
-                       hex( aStatusColor.green() ) + 
-                       hex( aStatusColor.blue() );
-  QString aStyleSheet = "color: #" + aColorRepr;
+  QString aStyleSheet = "color: #" + JournalDM_Tools::ColorToHex( aStatusColor );
   myStateLabel->setStyleSheet( aStyleSheet );
 }
 
@@ -148,7 +138,11 @@ void JournalGUI_ExerciseCard::keyPressEvent( QKeyEvent* theEvent )
 {
   if( myIsFinished && 
       ( theEvent->key()==Qt::Key_Return || theEvent->key()==Qt::Key_Enter ) )
+  {
     emit next();
+    theEvent->accept();
+    return;
+  }
 
   QGraphicsView::keyPressEvent( theEvent );
 }

@@ -2,6 +2,8 @@
 #include <JournalGUI_SimpleInputCard.h>
 #include <JournalGUI_LineEdit.h>
 #include <JournalGUI_QuestionLabel.h>
+#include <JournalDM_Tools.h>
+#include <JournalDM_Constants.h>
 #include <QGridLayout>
 
 JournalGUI_SimpleInputCard::JournalGUI_SimpleInputCard( QWidget* theParent )
@@ -49,7 +51,14 @@ double JournalGUI_SimpleInputCard::Verify( QString& theStatus, QColor& theColor 
 
   bool isOK = anExpectedAnswer==anActualAnswer;
   theStatus = isOK ? tr( "Correct" ) : tr( "Incorrect" );
-  theColor = isOK ? Qt::green : Qt::red;
+  theColor = isOK ? Qt::darkGreen : Qt::red;
+
+  QString aCorrection = "<font color=#%0>%1</font>";
+  QString aColorStr = JournalDM_Tools::ColorToHex( theColor );
+  QString aQuestion = myQuestion->text();
+  QString aCorrectedQuestion = aQuestion.replace( PLACEHOLDER, aCorrection.arg( aColorStr ).arg( anExpectedAnswer ) );
+  myQuestion->setText( aCorrectedQuestion );
+
   return isOK ? 1.0 : 0.0;
 }
 
