@@ -17,5 +17,11 @@ public:
   bool Save( const QString& );
 
 private:
-  QMap<uint, double> myResults;
+  struct Result
+  {
+    double Average;
+    int    Nb;
+  };
+  typedef QMap<uint, Result> MapOfResults;
+  MapOfResults myResults;
 };

@@ -14,14 +14,21 @@ JournalDM_Statistics::~JournalDM_Statistics()
 bool JournalDM_Statistics::Register( const JournalDM_ExerciseData& theExercise, double theResult )
 {
   uint aKey = theExercise.GetHash();
-  QMap<uint, double>::iterator anIt = myResults.find( aKey );
+  MapOfResults::iterator anIt = myResults.find( aKey );
   if( anIt==myResults.end() )
-    myResults.insert( aKey, theResult );
+  {
+    Result aResult;
+    aResult.Average = theResult;
+    aResult.Nb = 1;
+    myResults.insert( aKey, aResult );
+  }
   else
   {
-    double& r = anIt.value();
-    int nb = STAT_NB_ATTEMPTS_WEIGHT;
-    r = ( r * nb + theResult ) / ( nb + 1 );
+    Result& aResult = anIt.value();
+    double& a = aResult.Average;
+    int& n = aResult.Nb;
+    a = ( a * n + theResult ) / ( n + 1 );
+    n++;
   }
   return true;
 }
