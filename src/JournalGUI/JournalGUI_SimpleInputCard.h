@@ -19,4 +19,5 @@ private:
   QLabel*       myQuestion;
   QLineEdit*    myAnswer;
   QPushButton*  myReady;
+  QString       myCorrectAnswer;
 };

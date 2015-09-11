@@ -2,7 +2,6 @@
 #include <JournalGUI_ExerciseCard.h>
 #include <QPainter>
 #include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
 #include <QResizeEvent>
 #include <QGraphicsBlurEffect>
 #include <QGraphicsProxyWidget>
@@ -14,6 +13,8 @@ JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
 {
   myShrink = 0.8;
   myDelta = -10;
+  myShadowColor = QColor( 64, 64, 64, 200 );
+  myBlurRadius = 20;
 
   QGraphicsScene* aScene = new QGraphicsScene( this );
   setScene( aScene );
@@ -23,8 +24,12 @@ JournalGUI_ExerciseCard::JournalGUI_ExerciseCard( QWidget* theParent )
   setStyleSheet( "background: transparent" );
   setFrameShape( QFrame::NoFrame );
 
-  myPixmapItem = new QGraphicsPixmapItem();
-  aScene->addItem( myPixmapItem );
+  myShadowItem = new QGraphicsRectItem();
+  myShadowItem->setBrush( myShadowColor );
+  QGraphicsBlurEffect* aBlur = new QGraphicsBlurEffect( this );
+  aBlur->setBlurRadius( myBlurRadius );
+  myShadowItem->setGraphicsEffect( aBlur );
+  aScene->addItem( myShadowItem );
 
   QFrame* aFrame = new QFrame( 0 );
   myFrameItem = aScene->addWidget( aFrame );
@@ -43,20 +48,6 @@ void JournalGUI_ExerciseCard::SetExercise( const JournalDM_ExerciseData& theExer
 JournalDM_ExerciseData JournalGUI_ExerciseCard::GetExercise() const
 {
   return myExercise;
-}
-
-QPixmap applyEffectToImage( const QPixmap& theSource, QGraphicsEffect* theEffect )
-{
-  QGraphicsScene aScene;
-  QGraphicsPixmapItem anItem;
-  anItem.setPixmap( theSource );
-  anItem.setGraphicsEffect( theEffect );
-  aScene.addItem( &anItem );
-  QPixmap aResult( theSource.width(), theSource.height() );
-  aResult.fill( Qt::transparent );
-  QPainter aPainter( &aResult );
-  aScene.render( &aPainter, QRectF(), QRectF( 0, 0, theSource.width(), theSource.height() ) );
-  return aResult;
 }
 
 QRectF shrink( const QRect& theRect, double theShrink )
@@ -79,24 +70,9 @@ void JournalGUI_ExerciseCard::resizeEvent( QResizeEvent* theEvent )
 {
   QWidget::resizeEvent( theEvent );
 
-  // Create a shadow image
   QRect r( QPoint(), theEvent->size() );
   QRectF rs = shrink( r, myShrink );
-
-  QPixmap aShadow = QPixmap( r.size() );
-  aShadow.fill( Qt::transparent );
-  QPainter aPainter( &aShadow );
-
-  int aGray = 64;
-  int aGrayTr = 200;
-  aPainter.fillRect( rs, QColor( aGray, aGray, aGray, aGrayTr ) );
-
-  QGraphicsBlurEffect* aBlur = new QGraphicsBlurEffect();
-  aBlur->setBlurRadius( 20 );
-  myShadow = applyEffectToImage( aShadow, aBlur );
-
-  myPixmapItem->setPixmap( myShadow );
-  myPixmapItem->setPos( 0, 0 );
+  myShadowItem->setRect( rs );
   
   QRectF aCardRect = moveR( rs, myDelta, myDelta );
   myFrameItem->setGeometry( aCardRect );

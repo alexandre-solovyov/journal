@@ -9,7 +9,7 @@
 JournalGUI_SimpleInputCard::JournalGUI_SimpleInputCard( QWidget* theParent )
   : JournalGUI_ExerciseCard( theParent )
 {
-  QFont aQuestionFont( "Arial", 16 );
+  QFont aQuestionFont( "Georgia", 16 );
   aQuestionFont.setBold( false );
   QFont anAnswerFont = aQuestionFont;
   aQuestionFont.setBold( true );
@@ -22,10 +22,11 @@ JournalGUI_SimpleInputCard::JournalGUI_SimpleInputCard( QWidget* theParent )
   myAnswer->setFont( anAnswerFont );
   myReady = new QPushButton( tr( "Verify" ), this );
 
-  aLayout->addWidget( myQuestion, 0, 0 );
-  aLayout->addWidget( myAnswer, 1, 0 );
-  aLayout->addWidget( myReady, 2, 0 );
+  aLayout->addWidget( myQuestion, 0, 0, 1, 2 );
+  aLayout->addWidget( myAnswer, 1, 0, 1, 2 );
+  aLayout->addWidget( myReady, 2, 1 );
   aLayout->setRowStretch( 3, 1 );
+  aLayout->setColumnStretch( 0, 1 );
 }
 
 JournalGUI_SimpleInputCard::~JournalGUI_SimpleInputCard()
@@ -35,5 +36,6 @@ JournalGUI_SimpleInputCard::~JournalGUI_SimpleInputCard()
 void JournalGUI_SimpleInputCard::SetExercise( const JournalDM_ExerciseData& theData )
 {
   myQuestion->setText( theData.Question );
-  myAnswer->setText( theData.Answer );
+  myAnswer->setText( "" );
+  myCorrectAnswer = theData.Answer;
 }

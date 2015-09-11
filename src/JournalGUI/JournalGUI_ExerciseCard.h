@@ -22,11 +22,12 @@ protected:
   QGridLayout* layout() const;
 
 private:
-  QPixmap                myShadow;
   double                 myShrink;
   double                 myDelta;
+  QColor                 myShadowColor;
+  int                    myBlurRadius;
   JournalDM_ExerciseData myExercise;
 
-  QGraphicsPixmapItem*   myPixmapItem;
+  QGraphicsRectItem*     myShadowItem;
   QGraphicsProxyWidget*  myFrameItem;
 };
