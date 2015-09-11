@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <JournalDM.h>
 #include <QString>
 #include <QList>
 
@@ -10,11 +11,15 @@ struct JournalDM_ExerciseData
   QString Answer;
 
   uint GetHash() const;
+  bool operator==( const JournalDM_ExerciseData& ) const;
 };
 
-class JournalDM_ExerciseList : public QList<JournalDM_ExerciseData>
+#pragma warning( disable: 4661 )
+
+class JOURNAL_DM_API JournalDM_ExerciseList : public QList<JournalDM_ExerciseData>
 {
 public:
   using QList<JournalDM_ExerciseData>::append;
   void append( const QString& theQuestion, const QString& theAnswer );
 };
+

@@ -1,12 +1,12 @@
 
 #pragma once
 
-#include <JournalDM.h>
+#include <JournalDM_Exercise.h>
 #include <QObject>
 #include <QList>
 
 class JournalDM_Category;
-struct JournalDM_ExerciseData;
+;
 class JournalDM_IParser;
 
 class JOURNAL_DM_API JournalDM_Model : public QObject
@@ -20,7 +20,7 @@ public:
   int GetNbCategories() const;
   JournalDM_Category* GetCategory( int theIndex ) const;
 
-  JournalDM_ExerciseData GetRandomExercise() const;
+  JournalDM_ExerciseList GetRandomExercises( int theNbExercises ) const;
 
 protected:
   bool LoadFile( const QString& thePath );

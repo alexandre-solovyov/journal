@@ -12,6 +12,12 @@ JournalGUI_LineEdit
   selection-background-color: blue;
 }
 
+QLabel
+{
+  font-family: "Georgia";
+  font-size: 20px;
+}
+
 JournalGUI_QuestionLabel
 {
   font-family: "Georgia";

@@ -2,14 +2,12 @@
 #include <QApplication>
 #include <QDir>
 #include <JournalGUI_SimpleInputCard.h>
+#include <JournalGUI_ExerciseManager.h>
 #include <JournalDM_Model.h>
 #include <JournalDM_Exercise.h>
-#include <time.h>
 
 int main( int argc, char** argv )
 {
-  srand( time( 0 ) );
-
   QApplication anApp( argc, argv );
 
   // 1. Style setting
@@ -28,19 +26,11 @@ int main( int argc, char** argv )
   QString aPath = aTestDataFolder.absoluteFilePath( "german.txt" );
   JournalDM_Model aModel;
   bool isOK = aModel.Load( aPath );
-  JournalDM_ExerciseData aData = aModel.GetRandomExercise();
 
    // 3. Test exercise
-  double phi = 1.61803398875;
-  int h = 320;
-  int w = ( int )( h * phi );
-
   JournalGUI_SimpleInputCard aWindow;
-  aWindow.resize( w, h );
-  aWindow.show();
-  anApp.processEvents();
-
-  aWindow.SetExercise( aData );
+  JournalGUI_ExerciseManager aMgr( &aModel );
+  aMgr.RandomExerciseOn( &aWindow );
   
   return anApp.exec();
 }

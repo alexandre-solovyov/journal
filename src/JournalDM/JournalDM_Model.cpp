@@ -73,8 +73,11 @@ JournalDM_Category* JournalDM_Model::GetCategory( int theIndex ) const
     return 0;
 }
 
-JournalDM_ExerciseData JournalDM_Model::GetRandomExercise() const
+JournalDM_ExerciseList JournalDM_Model::GetRandomExercises( int theNbExercises ) const
 {
+  ///< \todo use the number of data (theNbExercises)
   int aCategoryIndex = rand() % GetNbCategories();
-  return GetCategory( aCategoryIndex )->GetRandomExercise();
+  JournalDM_ExerciseList aList;
+  aList.append( GetCategory( aCategoryIndex )->GetRandomExercise() );
+  return aList;
 }
